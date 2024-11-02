@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="DJ.png">
+	<!-- Created with Adobe Animate version 23.0.0.407 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Boyfriend DJ0000" x="0" y="0" width="394" height="458"/>
+	<SubTexture name="Boyfriend DJ0001" x="0" y="0" width="394" height="458"/>
+	<SubTexture name="Boyfriend DJ0002" x="394" y="0" width="394" height="458"/>
+	<SubTexture name="Boyfriend DJ0003" x="394" y="0" width="394" height="458"/>
+	<SubTexture name="Boyfriend DJ0004" x="788" y="0" width="394" height="458"/>
+	<SubTexture name="Boyfriend DJ0005" x="788" y="0" width="394" height="458"/>
+	<SubTexture name="Boyfriend DJ0006" x="1182" y="0" width="394" height="458"/>
+	<SubTexture name="Boyfriend DJ0007" x="1182" y="0" width="394" height="458"/>
+	<SubTexture name="Boyfriend DJ0008" x="1576" y="0" width="394" height="458"/>
+	<SubTexture name="Boyfriend DJ0009" x="1576" y="0" width="394" height="458"/>
+	<SubTexture name="Boyfriend DJ0010" x="0" y="458" width="394" height="458"/>
+	<SubTexture name="Boyfriend DJ0011" x="0" y="458" width="394" height="458"/>
+	<SubTexture name="Boyfriend DJ0012" x="394" y="458" width="394" height="458"/>
+	<SubTexture name="Boyfriend DJ0013" x="394" y="458" width="394" height="458"/>
+</TextureAtlas>

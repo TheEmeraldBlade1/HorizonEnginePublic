@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="NOTE_assets_static.png">
+	<!-- Created with Adobe Animate version 23.0.0.407 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="arrowDOWN0000" x="0" y="0" width="157" height="154"/>
+	<SubTexture name="arrowLEFT0000" x="157" y="0" width="155" height="156"/>
+	<SubTexture name="arrowRIGHT0000" x="312" y="0" width="154" height="157"/>
+	<SubTexture name="arrowUP0000" x="466" y="0" width="157" height="154"/>
+	<SubTexture name="down confirm0000" x="623" y="0" width="244" height="240"/>
+	<SubTexture name="down confirm0001" x="867" y="0" width="244" height="240"/>
+	<SubTexture name="down confirm0002" x="1111" y="0" width="244" height="240"/>
+	<SubTexture name="down press0000" x="1355" y="0" width="149" height="146"/>
+	<SubTexture name="down press0001" x="1355" y="0" width="149" height="146"/>
+	<SubTexture name="down press0002" x="1504" y="0" width="149" height="146"/>
+	<SubTexture name="left confirm0000" x="1653" y="0" width="231" height="235"/>
+	<SubTexture name="left confirm0001" x="0" y="240" width="231" height="235"/>
+	<SubTexture name="left confirm0002" x="231" y="240" width="231" height="235"/>
+	<SubTexture name="left press0000" x="462" y="240" width="146" height="149"/>
+	<SubTexture name="left press0001" x="462" y="240" width="146" height="149"/>
+	<SubTexture name="left press0002" x="608" y="240" width="146" height="149"/>
+	<SubTexture name="right confirm0000" x="754" y="240" width="237" height="241"/>
+	<SubTexture name="right confirm0001" x="991" y="240" width="237" height="241"/>
+	<SubTexture name="right confirm0002" x="1228" y="240" width="237" height="241"/>
+	<SubTexture name="right press0000" x="1465" y="240" width="148" height="151"/>
+	<SubTexture name="right press0001" x="1465" y="240" width="148" height="151"/>
+	<SubTexture name="right press0002" x="1613" y="240" width="148" height="151"/>
+	<SubTexture name="up confirm0000" x="1761" y="240" width="238" height="234"/>
+	<SubTexture name="up confirm0001" x="0" y="481" width="238" height="234"/>
+	<SubTexture name="up confirm0002" x="238" y="481" width="238" height="234"/>
+	<SubTexture name="up press0000" x="476" y="481" width="153" height="150"/>
+	<SubTexture name="up press0001" x="476" y="481" width="153" height="150"/>
+	<SubTexture name="up press0002" x="629" y="481" width="153" height="150"/>
+</TextureAtlas>

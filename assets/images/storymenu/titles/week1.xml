@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="week1png.png">
+	<!-- Created with Adobe Animate version 23.0.0.407 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="WEEK10000" x="0" y="0" width="360" height="89"/>
+	<SubTexture name="WEEK1 select0000" x="0" y="0" width="360" height="89"/>
+	<SubTexture name="WEEK1 select0001" x="0" y="89" width="360" height="89"/>
+</TextureAtlas>
