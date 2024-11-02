@@ -91,9 +91,6 @@ class NoteColorsState extends MusicBeatSubstate
 	var changingNote:Bool = false;
 	var hsvTextOffsets:Array<Float> = [240, 90];
 	override function update(elapsed:Float) {
-		if (FlxG.keys.justPressed.THREE) {
-			FlxG.mouse.visible = !FlxG.mouse.visible;
-		}
 
 		if(changingNote) {
 			if(holdTime < 0.5) {

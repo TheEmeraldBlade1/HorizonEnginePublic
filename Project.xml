@@ -47,6 +47,7 @@
 	<assets path="assets" />
 	<assets path='example_mods' rename='mods' embed='false'/>
 	<assets path='example_scripts' rename='scripts' embed='false'/>
+	<assets path='example_stages' rename='stages' embed='false'/>
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
 	<!-- <template path='mods' /> -->
 	

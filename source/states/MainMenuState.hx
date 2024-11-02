@@ -128,6 +128,11 @@ class MainMenuState extends MusicBeatState
 				changeItem(1);
 			}
 
+			if (FlxG.keys.justPressed.SEVEN)
+			{
+				FlxG.switchState(new DebugMenu());
+			}
+
 			if (controls.ACCEPT)
 			{
 				if (optionShit[curSelected] == 'donate')

@@ -6,7 +6,7 @@ import openfl.display.Sprite;
 
 class Main extends Sprite
 {
-	public static var gameVersion:String = '0.1.0';
+	public static var gameVersion:String = '0.1.1';
 	public function new()
 	{
 		super();
@@ -15,5 +15,7 @@ class Main extends Sprite
 		#if !mobile
 		addChild(new FPS(10, 3, 0xFFFFFF));
 		#end
+
+		ScriptHandler.initialize();
 	}
 }

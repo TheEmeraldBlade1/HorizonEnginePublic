@@ -25,4 +25,8 @@ class Cursor {
         FlxG.mouse.visible = false;
         FlxG.mouse.unload(); 
     }
+    public static function toggleCursor()
+    {
+        FlxG.mouse.visible = !FlxG.mouse.visible;
+    }
 }

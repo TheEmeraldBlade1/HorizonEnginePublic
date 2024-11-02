@@ -20,6 +20,13 @@ import openfl.filters.ShaderFilter;
 import sys.FileSystem;
 import sys.io.File;
 
+import flixel.FlxSprite;
+import flixel.animation.FlxBaseAnimation;
+import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.animation.FlxAnimationController;
+import flixel.animation.FlxAnimation;
+import flixel.animation.FlxPrerotatedAnimation;
+
 using StringTools;
 
 /**
@@ -60,7 +67,6 @@ class ScriptHandler
 		exp.set("ShaderFilter", ShaderFilter);
 		exp.set("GraphicsShader", GraphicsShader);
 		exp.set("FlxGraphicsShader", FlxGraphicsShader);
-		exp.set("FlxGroup", FlxGroup);
 		
 		// Classes (Forever)
         exp.set("Note", Note);
@@ -70,6 +76,7 @@ class ScriptHandler
 		exp.set("FNFSprite", FNFSprite);
 		exp.set("HealthIcon", HealthIcon);
         exp.set("PlayState", PlayState);
+		exp.set("StoryMenuState", StoryMenuState);
         
         //
 		parser.allowTypes = true;

@@ -12,6 +12,7 @@ import flixel.util.FlxColor;
 /**
 	*DEBUG MODE
  */
+ using StringTools;
 class AnimationDebug extends FlxState
 {
 	var _file:FileReference;
@@ -26,7 +27,7 @@ class AnimationDebug extends FlxState
 	var isDad:Bool = true;
 	var daAnim:String = 'spooky';
 	var camFollow:FlxObject;
-
+	public static var menu:Bool = false;
 	var UI_box:FlxUITabMenu;
 	var UI_options:FlxUITabMenu;
 	var offsetX:FlxUINumericStepper;
@@ -64,6 +65,7 @@ class AnimationDebug extends FlxState
 			dadBG = new Character(0, 0, daAnim);
 			dadBG.screenCenter();
 			dadBG.debugMode = true;
+			dadBG.flipX = false;
 			dadBG.alpha = 0.75;
 			dadBG.color = 0xFF000000;
 	
@@ -142,6 +144,7 @@ class AnimationDebug extends FlxState
 				dadBG = new Character(0, 0, characters[Std.parseInt(character)]);
 				dadBG.screenCenter();
 				dadBG.debugMode = true;
+				dadBG.flipX = false;
 				dadBG.alpha = 0.75;
 				dadBG.color = 0xFF000000;
 				add(dadBG);
@@ -195,6 +198,61 @@ class AnimationDebug extends FlxState
 		});
 	}
 
+	function saveBoyOffsets():Void
+		{
+			var result = "";
+	
+			for (anim => offsets in char.animOffsets)
+			{
+				var text = anim + " " + offsets.join(" ");
+				result += text + "\n";
+			}
+	
+			if ((result != null) && (result.length > 0))
+			{
+				_file = new FileReference();
+				_file.addEventListener(Event.COMPLETE, onSaveComplete);
+				_file.addEventListener(Event.CANCEL, onSaveCancel);
+				_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+				_file.save(result.trim(), daAnim + "Offsets.fnfchar");
+			}
+		}
+	
+		/**
+		 * Called when the save file dialog is completed.
+		 */
+		function onSaveComplete(_):Void
+		{
+			_file.removeEventListener(Event.COMPLETE, onSaveComplete);
+			_file.removeEventListener(Event.CANCEL, onSaveCancel);
+			_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+			_file = null;
+			FlxG.log.notice("Successfully saved OFFSET DATA.");
+		}
+	
+		/**
+		 * Called when the save file dialog is cancelled.
+		 */
+		function onSaveCancel(_):Void
+		{
+			_file.removeEventListener(Event.COMPLETE, onSaveComplete);
+			_file.removeEventListener(Event.CANCEL, onSaveCancel);
+			_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+			_file = null;
+		}
+	
+		/**
+		 * Called if there is an error while saving the offset data.
+		 */
+		function onSaveError(_):Void
+		{
+			_file.removeEventListener(Event.COMPLETE, onSaveComplete);
+			_file.removeEventListener(Event.CANCEL, onSaveCancel);
+			_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+			_file = null;
+			FlxG.log.error("Problem saving Offset data");
+		}
+
 	override function update(elapsed:Float)
 	{
 		textAnim.text = char.animation.curAnim.name;
@@ -211,10 +269,11 @@ class AnimationDebug extends FlxState
 				// TO MOUSE MOVEMENT?????????
 			}
 
-		if (FlxG.keys.justPressed.P)
-			FlxG.camera.zoom += 0.25;
-		if (FlxG.keys.justPressed.O)
-			FlxG.camera.zoom -= 0.25;
+			updateTexts();
+			genBoyOffsets(false);
+
+		if (FlxG.mouse.wheel != 0)
+			FlxG.camera.zoom -= 0.25 * FlxG.mouse.wheel;
 
 		if (FlxG.keys.pressed.I || FlxG.keys.pressed.J || FlxG.keys.pressed.K || FlxG.keys.pressed.L)
 		{
@@ -271,20 +330,19 @@ class AnimationDebug extends FlxState
 
 		if (FlxG.keys.justPressed.Q)
 			{
-				char.playAnim(animList[curAnim]);
-	
+				curAnim -= 1;
 				updateTexts();
 				genBoyOffsets(false);
-				curAnim --;
+				char.playAnim(animList[curAnim]);
 			}
 		
 			if (FlxG.keys.justPressed.E)
 			{
-				char.playAnim(animList[curAnim]);
-	
+				curAnim += 1;
 				updateTexts();
 				genBoyOffsets(false);
-				curAnim ++;
+				char.playAnim(animList[curAnim]);
+
 			}
 
 		if (curAnim < 0)
@@ -296,7 +354,14 @@ class AnimationDebug extends FlxState
 		if (FlxG.keys.justPressed.ESCAPE)
 			{
 				FlxG.mouse.visible = false;
-				FlxG.switchState(new PlayState());
+				if (menu)
+				{
+					FlxG.switchState(new DebugMenu());
+				}
+				else
+				{
+					FlxG.switchState(new PlayState());
+				}
 			}
 
 		var upP = FlxG.keys.anyPressed([UP]);
@@ -325,6 +390,9 @@ class AnimationDebug extends FlxState
 			genBoyOffsets(false);
 			char.playAnim(animList[curAnim]);
 		}
+
+		if (FlxG.keys.pressed.ENTER)
+			saveBoyOffsets();
 
 		super.update(elapsed);
 	}

@@ -102,6 +102,9 @@ import flixel.group.FlxGroup;
 import flixel.addons.effects.chainable.FlxEffectSprite;
 import flixel.addons.effects.chainable.FlxWaveEffect;
 import flixel.tweens.FlxTween;
+import flixel.math.FlxAngle;
+import flixel.util.FlxTimer;
+import flixel.effects.FlxFlicker;
 
 // IMPORT CONTROLS
 import Controls.KeyboardScheme;
@@ -130,7 +133,7 @@ import foreverScript.ScriptHandler;
 import foreverScript.ScriptHandler.ForeverModule;
 
 // IMPORT STAGES
-import stages.Stage;
 import stages.MallEvil;
 import stages.SchoolEvil;
 import stages.Spooky;
+import stages.Philly;

@@ -38,13 +38,16 @@ class FreeplayState extends MusicBeatState
 	var DJ1:FlxSprite;
 	var DJ2:FlxSprite;
 
+	var daTime:Float = 0.9;
+
 	var erectSongs:Array<String> = ['Dadbattle', 'Blammed', 'Fresh', 'Bopeebo', 'Thorns', 'Senpai', 'Roses'];
 
 	override function create()
 	{
-		if (!FlxG.sound.music.playing)
+		//if (!FlxG.sound.music.playing)
 		{
-			FlxG.sound.playMusic('assets/music/freakyMenu' + TitleState.soundExt);
+			FlxG.sound.music.stop();
+			FlxG.sound.playMusic('assets/music/freeplayRandom' + TitleState.soundExt);
 		}
 
 		var isDebug:Bool = false;
@@ -99,12 +102,12 @@ class FreeplayState extends MusicBeatState
 			songs.push('Thorns');
 		}
 
-		/*if (StoryMenuState.weekUnlocked[7] || isDebug)
+		if (StoryMenuState.weekUnlocked[7] || isDebug)
 		{
 			songs.push('Ugh');
 			songs.push('Guns');
 			songs.push('Stress');
-		}*/
+		}
 
 		/*if (StoryMenuState.weekUnlocked[100] || isDebug)
 		{
@@ -118,12 +121,13 @@ class FreeplayState extends MusicBeatState
 
 		// LOAD CHARACTERS
 
-		var bg:FlxSprite = new FlxSprite().loadGraphic('assets/images/menuBGBlue.png');
+		var bg:FlxSprite = new FlxSprite().loadGraphic('assets/images/freeplay/freeplayBGdad.png');
 		add(bg);
 
 		DJ1 = new FlxSprite(870, 350);
 		DJ1.frames = FlxAtlasFrames.fromSparrow('assets/images/freeplay/DJ.png', 'assets/images/freeplay/DJ.xml');
 		DJ1.animation.addByPrefix('DJ IDLE', "Boyfriend DJ0", 24);
+		DJ1.animation.addByPrefix('DJ CONFIRM', "Boyfriend DJ confirm", 24);
 		DJ1.animation.play('DJ IDLE');
 		DJ1.scrollFactor.set(0.4, 0.4);
 		DJ1.antialiasing = true;
@@ -131,6 +135,7 @@ class FreeplayState extends MusicBeatState
 		DJ2 = new FlxSprite(20, 350);
 		DJ2.frames = FlxAtlasFrames.fromSparrow('assets/images/freeplay/DJ2.png', 'assets/images/freeplay/DJ2.xml');
 		DJ2.animation.addByPrefix('DJ IDLE', "Pico DJ0", 24);
+		DJ2.animation.addByPrefix('DJ CONFIRM', "Pico DJ confirm0", 24);
 		DJ2.animation.play('DJ IDLE');
 		DJ2.scrollFactor.set(0.4, 0.4);
 		DJ2.antialiasing = true;
@@ -255,9 +260,6 @@ class FreeplayState extends MusicBeatState
 
 		scoreText.text = "PERSONAL BEST:" + lerpScore;
 
-		DJ1.animation.play('DJ IDLE');
-		DJ2.animation.play('DJ IDLE');
-
 		var upP = controls.UP_P;
 		var downP = controls.DOWN_P;
 		var accepted = controls.ACCEPT;
@@ -288,21 +290,36 @@ class FreeplayState extends MusicBeatState
 
 		if (controls.BACK)
 		{
+			FlxG.sound.music.stop();
+			FlxG.sound.play('assets/sounds/cancelMenu' + TitleState.soundExt);
 			FlxG.switchState(new MainMenuState());
 		}
-
 		if (accepted)
 		{
-			var poop:String = Highscore.formatSong(songs[curSelected].toLowerCase(), curDifficulty);
+			DJ1.animation.play('DJ CONFIRM');
+			DJ2.animation.play('DJ CONFIRM');
+			FlxG.sound.play('assets/sounds/confirmMenu' + TitleState.soundExt);
+			for (i in 0...grpSongs.members.length)
+				{
+					if (i == curSelected)
+					{
+						FlxFlicker.flicker(grpSongs.members[i], 1, 0.06, false, false);
+					}
+				}
+		
+				new FlxTimer().start(daTime, function(tmr:FlxTimer)
+				{
+					var poop:String = Highscore.formatSong(songs[curSelected].toLowerCase(), curDifficulty);
 
-			trace(poop);
-
-			PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].toLowerCase());
-			PlayState.isStoryMode = false;
-			PlayState.storyDifficulty = curDifficulty;
-			FlxG.switchState(new PlayState());
-			if (FlxG.sound.music != null)
-				FlxG.sound.music.stop();
+					trace(poop);
+		
+					PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].toLowerCase());
+					PlayState.isStoryMode = false;
+					PlayState.storyDifficulty = curDifficulty;
+					FlxG.switchState(new PlayState());
+					if (FlxG.sound.music != null)
+						FlxG.sound.music.stop();
+				});
 		}
 	}
 
