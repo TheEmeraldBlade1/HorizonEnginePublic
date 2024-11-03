@@ -1,7 +1,7 @@
 {
 	"song": {
 		"speed": 2.5,
-		"stage": "SchoolEvil",
+		"stage": "schoolEvil",
 		"player1": "bf-pixel",
 		"player2": "spirit",
 		"needsVoices":true,

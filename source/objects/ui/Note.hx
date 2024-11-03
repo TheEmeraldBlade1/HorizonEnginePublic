@@ -71,11 +71,11 @@ class Note extends FlxSprite
 
 		this.noteData = noteData;
 
-		var daStage:String = PlayState.curStage;
+		var daStage:String = PlayState.SONG.stage;
 
 		switch (daStage)
 		{
-			case 'school' | 'schoolEvil':
+			case 'school' | 'schoolEvil' | 'School' | 'SchoolEvil':
 				loadGraphic('assets/images/weeb/pixelUI/arrows-pixels.png', true, 17, 17);
 
 				animation.add('greenScroll', [6]);
@@ -170,7 +170,7 @@ class Note extends FlxSprite
 
 			x -= width / 2;
 
-			if (PlayState.curStage.startsWith('school'))
+			if (PlayState.SONG.stage.startsWith('school'))
 				x += 30;
 
 			if (prevNote.isSustainNote)

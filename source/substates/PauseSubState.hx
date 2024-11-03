@@ -122,7 +122,11 @@ class PauseSubState extends MusicBeatSubstate
 						FlxG.switchState(new FreeplayState());
 			}
 		}
-
+		
+		if (FlxG.keys.justPressed.ESCAPE)
+		{
+			close();
+		}
 		if (FlxG.keys.justPressed.J)
 		{
 			// for reference later!

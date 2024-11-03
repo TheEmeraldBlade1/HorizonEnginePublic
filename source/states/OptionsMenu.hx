@@ -64,6 +64,10 @@ class OptionsMenu extends MusicBeatState
 		
 		songs.push('Song Length');
 
+		songs.push('Scroll Speed: ' + FlxG.save.data.song_speed);
+
+		songs.push('Transparent Notes');
+
 		// LOAD MUSIC
 
 		// LOAD CHARACTERS
@@ -76,12 +80,17 @@ class OptionsMenu extends MusicBeatState
 
 		for (i in 0...songs.length)
 		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i], true, false);
+			var songText:Alphabet;
+			if (i == 10){
+				songText = new Alphabet(0, (70 * i) + 30, songs[i], false, false);
+			}else{
+				songText = new Alphabet(0, (70 * i) + 30, songs[i], true, false);
+			}
 			songText.isMenuItem = true;
 			songText.targetY = i;
 			songText.itemType = 'Center';
 			grpSongs.add(songText);
-			if (i != 1 && i != 7){
+			if (i != 1 && i != 7 && i != 10){
 				var checkbox:CheckboxThingie = new CheckboxThingie(songText.x, songText.y, false);
 				checkbox.sprTracker = songText;
 				checkboxArray.push(checkbox);
@@ -153,6 +162,31 @@ class OptionsMenu extends MusicBeatState
 			changeSelection(1);
 		}
 
+		if (controls.LEFT_P && curSelected == 10){
+			if (FlxG.save.data.song_speed < 0.1)
+				FlxG.save.data.song_speed = 5;
+			else
+				FlxG.save.data.song_speed -= 0.1;
+			grpSongs.remove(grpSongs.members[curSelected]);
+			var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, 'Scroll Speed: ' + FlxG.save.data.song_speed, false, false);
+			ctrl.isMenuItem = true;
+			ctrl.targetY = curSelected - 10;
+			ctrl.itemType = 'Center';
+			grpSongs.add(ctrl);
+		}
+		if (controls.RIGHT_P && curSelected == 10){
+			if (FlxG.save.data.song_speed > 5)
+				FlxG.save.data.song_speed = 0.1;
+			else
+				FlxG.save.data.song_speed += 0.1;
+			grpSongs.remove(grpSongs.members[curSelected]);
+			var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, 'Scroll Speed: ' + FlxG.save.data.song_speed, false, false);
+			ctrl.isMenuItem = true;
+			ctrl.targetY = curSelected - 10;
+			ctrl.itemType = 'Center';
+			grpSongs.add(ctrl);
+		}
+
 		if (controls.BACK)
 		{
 			FlxG.switchState(new MainMenuState());
@@ -173,12 +207,14 @@ class OptionsMenu extends MusicBeatState
 					checkbox.daValue = FlxG.save.data.NoteFlipX;
 				case 'Flip Note Y':
 					checkbox.daValue = FlxG.save.data.NoteFlipY;
-				case 'Middlescroll':
+				case 'Centered Strumline':
 					checkbox.daValue = FlxG.save.data.getMiddleScroll;
 				case 'Quant Notes':
 					checkbox.daValue = FlxG.save.data.stepMania;
 				case 'Song Length':
 					checkbox.daValue = FlxG.save.data.timeBarTxt;
+				case 'Transparent Notes':
+					checkbox.daValue = FlxG.save.data.transparentNotes;
 			}
 		}
 
@@ -188,7 +224,6 @@ class OptionsMenu extends MusicBeatState
 			{
 				case 0:
 					FlxG.save.data.gt = !FlxG.save.data.gt;
-
 				case 1:
 					FlxG.switchState(new KeybindsMenu());
 				case 2:
@@ -207,6 +242,8 @@ class OptionsMenu extends MusicBeatState
 					FlxG.save.data.stepMania = !FlxG.save.data.stepMania;
 				case 9:
 					FlxG.save.data.timeBarTxt = !FlxG.save.data.timeBarTxt;
+				case 11:
+					FlxG.save.data.transparentNotes = !FlxG.save.data.transparentNotes;
 			}
 		}
 	}

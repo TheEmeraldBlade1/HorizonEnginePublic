@@ -20,12 +20,8 @@ import openfl.filters.ShaderFilter;
 import sys.FileSystem;
 import sys.io.File;
 
-import flixel.FlxSprite;
 import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.animation.FlxAnimationController;
-import flixel.animation.FlxAnimation;
-import flixel.animation.FlxPrerotatedAnimation;
 
 using StringTools;
 
@@ -66,9 +62,10 @@ class ScriptHandler
 		exp.set("Shader", Shader);
 		exp.set("ShaderFilter", ShaderFilter);
 		exp.set("GraphicsShader", GraphicsShader);
-		exp.set("FlxGraphicsShader", FlxGraphicsShader);
+		exp.set("FlxBaseAnimation", FlxBaseAnimation);
+		exp.set("FlxAtlasFrames", FlxAtlasFrames);
 		
-		// Classes (Forever)
+		// Classes (FNF)
         exp.set("Note", Note);
 		exp.set("Conductor", Conductor);
 		exp.set("Character", Character);
@@ -77,6 +74,11 @@ class ScriptHandler
 		exp.set("HealthIcon", HealthIcon);
         exp.set("PlayState", PlayState);
 		exp.set("StoryMenuState", StoryMenuState);
+		exp.set("SongScore", SongScore);
+		exp.set("Misses", Misses);
+		exp.set("Combo", Combo);
+		exp.set("Accuracy", Accuracy);
+		exp.set("SongSpeed", SongSpeed);
         
         //
 		parser.allowTypes = true;

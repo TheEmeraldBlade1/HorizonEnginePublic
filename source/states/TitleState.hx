@@ -86,6 +86,12 @@ class TitleState extends MusicBeatState
 		if (FlxG.save.data.timeBarTxt == null)
 			FlxG.save.data.timeBarTxt = false;
 
+		if (FlxG.save.data.song_speed == null)
+			FlxG.save.data.song_speed = 3.5;
+
+		if (FlxG.save.data.transparentNotes == null)
+			FlxG.save.data.transparentNotes = true;
+
 
 
 		// DEBUG BULLSHIT

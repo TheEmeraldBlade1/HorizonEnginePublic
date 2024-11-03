@@ -1,7 +1,7 @@
 {
 	"song": {
 		"speed": 2.2,
-		"stage": "Stage",
+		"stage": "stage",
 		"player1": "bf",
 		"player2": "dad",
 		"needsVoices":true,

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created with Funkin Packer v0.1.3 https://neeeoo.github.io/funkin-packer/
+-->
+<TextureAtlas imagePath="tankman.png" width="95" height="160">
+	<SubTexture name="loss" x="0" y="0" width="95" height="80" frameX="-0" frameY="-0" frameWidth="95" frameHeight="80"/>
+	<SubTexture name="norm" x="0" y="80" width="95" height="80" frameX="-0" frameY="-0" frameWidth="95" frameHeight="80"/>
+</TextureAtlas>

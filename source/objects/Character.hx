@@ -18,6 +18,20 @@ class Character extends FlxSprite
 
 	public var hpIcon:String = "bf";
 
+	var tex:FlxAtlasFrames;
+
+	var charBuild:ForeverModule;
+	var exposure:StringMap<Dynamic>;
+
+	public var iconWidth:Int = 150;
+
+	public var healthColorArray:Array<Int> = [255, 0, 0];
+
+	public var updateableScript:Array<ForeverModule> = [];
+
+	var danceRight:Bool = false;
+	var packer:Bool = false;
+
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
 		animOffsets = new Map<String, Array<Dynamic>>();
@@ -26,15 +40,13 @@ class Character extends FlxSprite
 		curCharacter = character;
 		this.isPlayer = isPlayer;
 
-		var tex:FlxAtlasFrames;
-
 		antialiasing = true;
 
 		switch (curCharacter)
 		{
 			case 'gf':
 				// GIRLFRIEND CODE
-				tex = FlxAtlasFrames.fromSparrow('assets/characters/images/GF_assets.png', 'assets/characters/xmls/GF_assets.xml');
+				tex = getPath('GF_assets');
 				frames = tex;
 				animation.addByPrefix('cheer', 'GF Cheer', 24, false);
 				animation.addByPrefix('singLEFT', 'GF left note', 24, false);
@@ -48,12 +60,16 @@ class Character extends FlxSprite
 				animation.addByIndices('hairFall', "GF Dancing Beat Hair Landing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "", 24, false);
 				animation.addByPrefix('scared', 'GF FEAR', 24);
 
+				healthColorArray = [165, 0, 77];
+
 				hpIcon = "gf";
+
+				iconWidth = 100;
 
 				playAnim('danceRight');
 
 			case 'gf-christmas':
-				tex = FlxAtlasFrames.fromSparrow('assets/characters/images/gfChristmas.png', 'assets/characters/xmls/gfChristmas.xml');
+				tex = getPath('gfChristmas');
 				frames = tex;
 				animation.addByPrefix('cheer', 'GF Cheer', 24, false);
 				animation.addByPrefix('singLEFT', 'GF left note', 24, false);
@@ -69,10 +85,14 @@ class Character extends FlxSprite
 
 				hpIcon = "gf";
 
+				healthColorArray = [165, 0, 77];
+
+				iconWidth = 100;
+
 				playAnim('danceRight');
 
 			case 'gf-car':
-				tex = FlxAtlasFrames.fromSparrow('assets/characters/images/gfCar.png', 'assets/characters/xmls/gfCar.xml');
+				tex = getPath('gfCar');
 				frames = tex;
 				animation.addByIndices('singUP', 'GF Dancing Beat Hair blowing CAR', [0], "", 24, false);
 				animation.addByIndices('danceLeft', 'GF Dancing Beat Hair blowing CAR', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
@@ -81,10 +101,28 @@ class Character extends FlxSprite
 
 					hpIcon = "gf";
 
+					healthColorArray = [165, 0, 77];
+
+					iconWidth = 100;
+
 				playAnim('danceRight');
 
+				case 'gf-tankmen':
+					frames = getPath('gfTankmen');
+					animation.addByIndices('sad', 'GF Crying at Gunpoint', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, true);
+					animation.addByIndices('danceLeft', 'GF Dancing at Gunpoint', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
+					animation.addByIndices('danceRight', 'GF Dancing at Gunpoint', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
+	
+					playAnim('danceRight');
+
+					healthColorArray = [165, 0, 77];
+
+					iconWidth = 100;
+
+					hpIcon = "gf";
+
 			case 'gf-pixel':
-				tex = FlxAtlasFrames.fromSparrow('assets/characters/images/gfPixel.png', 'assets/characters/xmls/gfPixel.xml');
+				tex = getPath('gfPixel');
 				frames = tex;
 				animation.addByIndices('singUP', 'GF IDLE', [2], "", 24, false);
 				animation.addByIndices('danceLeft', 'GF IDLE', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
@@ -94,12 +132,16 @@ class Character extends FlxSprite
 
 				hpIcon = "gf";
 
+				healthColorArray = [165, 0, 77];
+
+				iconWidth = 100;
+
 				setGraphicSize(Std.int(width * PlayState.daPixelZoom));
 				updateHitbox();
 				antialiasing = false;
 
 			case 'darnell':
-				tex = FlxAtlasFrames.fromSparrow('assets/characters/images/DARNELL_WET_FART.png', 'assets/characters/xmls/DARNELL_WET_FART.xml');
+				tex = getPath('DARNELL_WET_FART');
 				frames = tex;
 				animation.addByPrefix('idle', 'idle', 24);
 				animation.addByPrefix('singUP', 'up', 24);
@@ -111,7 +153,7 @@ class Character extends FlxSprite
 	
 				playAnim('idle');
 			case 'spooky':
-				tex = FlxAtlasFrames.fromSparrow('assets/characters/images/spooky_kids_assets.png', 'assets/characters/xmls/spooky_kids_assets.xml');
+				tex = getPath('spooky_kids_assets');
 				frames = tex;
 				animation.addByPrefix('singUP', 'spooky UP NOTE', 24, false);
 				animation.addByPrefix('singDOWN', 'spooky DOWN note', 24, false);
@@ -120,11 +162,15 @@ class Character extends FlxSprite
 				animation.addByIndices('danceLeft', 'spooky dance idle', [0, 2, 6], "", 12, false);
 				animation.addByIndices('danceRight', 'spooky dance idle', [8, 10, 12, 14], "", 12, false);
 
+				healthColorArray = [213, 126, 0];
+
+				iconWidth = 100;
+
 				hpIcon = "spooky";
 
 				playAnim('danceRight');
 			case 'mom':
-				tex = FlxAtlasFrames.fromSparrow('assets/characters/images/Mom_Assets.png', 'assets/characters/xmls/Mom_Assets.xml');
+				tex = getPath('Mom_Assets');
 				frames = tex;
 
 				animation.addByPrefix('idle', "Mom Idle", 24, false);
@@ -135,12 +181,16 @@ class Character extends FlxSprite
 				// CUZ DAVE IS DUMB!
 				animation.addByPrefix('singRIGHT', 'Mom Pose Left', 24, false);
 
+				healthColorArray = [216, 85, 142];
+
 				playAnim('idle');
 
+				iconWidth = 100;
+				
 				hpIcon = "mom";
 
 			case 'mom-car':
-				tex = FlxAtlasFrames.fromSparrow('assets/characters/images/momCar.png', 'assets/characters/xmls/momCar.xml');
+				tex = getPath('momCar');
 				frames = tex;
 
 				animation.addByPrefix('idle', "Mom Idle", 24, false);
@@ -153,9 +203,13 @@ class Character extends FlxSprite
 
 				hpIcon = "mom";
 
+				iconWidth = 100;
+
+				healthColorArray = [216, 85, 142];
+
 				playAnim('idle');
 			case 'monster':
-				tex = FlxAtlasFrames.fromSparrow('assets/characters/images/Monster_Assets.png', 'assets/characters/xmls/Monster_Assets.xml');
+				tex = getPath('Monster_Assets');
 				frames = tex;
 				animation.addByPrefix('idle', 'monster idle', 24, false);
 				animation.addByPrefix('singUP', 'monster up note', 24, false);
@@ -164,10 +218,12 @@ class Character extends FlxSprite
 				animation.addByPrefix('singRIGHT', 'Monster Right note', 24, false);
 
 				hpIcon = "monster";
+
+				healthColorArray = [243, 255, 110];
 
 				playAnim('idle');
 			case 'monster-christmas':
-				tex = FlxAtlasFrames.fromSparrow('assets/characters/images/monsterChristmas.png', 'assets/characters/xmls/monsterChristmas.xml');
+				tex = getPath('monsterChristmas');
 				frames = tex;
 				animation.addByPrefix('idle', 'monster idle', 24, false);
 				animation.addByPrefix('singUP', 'monster up note', 24, false);
@@ -177,9 +233,11 @@ class Character extends FlxSprite
 
 				hpIcon = "monster";
 
+				healthColorArray = [243, 255, 110];
+
 				playAnim('idle');
 			case 'pico':
-				tex = FlxAtlasFrames.fromSparrow('assets/characters/images/Pico_FNF_assetss.png', 'assets/characters/xmls/Pico_FNF_assetss.xml');
+				tex = getPath('Pico_FNF_assetss');
 				frames = tex;
 				animation.addByPrefix('idle', "Pico Idle Dance", 24);
 				animation.addByPrefix('singUP', 'pico Up note0', 24, false);
@@ -197,12 +255,16 @@ class Character extends FlxSprite
 
 				hpIcon = "pico";
 
+				iconWidth = 100;
+
+				healthColorArray = [183, 216, 85];
+
 				playAnim('idle');
 
 				flipX = true;
 
 				case 'pico-player':
-					tex = FlxAtlasFrames.fromSparrow('assets/characters/images/Pico_FNF_assetss.png', 'assets/characters/xmls/Pico_FNF_assetss.xml');
+					tex = getPath('Pico_FNF_assetss');
 					frames = tex;
 					animation.addByPrefix('idle', "Pico Idle Dance", 24);
 					animation.addByPrefix('singUP', 'pico Up note0', 24, false);
@@ -218,12 +280,16 @@ class Character extends FlxSprite
 	
 					playAnim('idle');
 
+					healthColorArray = [183, 216, 85];
+
 					hpIcon = "pico";
+
+					iconWidth = 100;
 	
 					flipX = true;
 
 				case 'bf-holding-gf':
-					frames = FlxAtlasFrames.fromSparrow('assets/characters/images/bfAndGF.png', 'assets/characters/xmls/bfAndGF.xml');
+					frames = getPath('bfAndGF');
 					animation.addByPrefix('idle', 'BF idle dance', 24, false);
 					animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
 					animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
@@ -238,29 +304,56 @@ class Character extends FlxSprite
 
 					flipX = true;
 
+					healthColorArray = [49, 176, 209];
+
 					hpIcon = "bf-holding-gf";
 	
 					playAnim('idle');
 
 				case "tankman":
-					frames = FlxAtlasFrames.fromSparrow('assets/characters/images/tankmanCaptain.png', 'assets/characters/xmls/tankmanCaptain.xml');
+					frames = getPath('tankmanCaptain');
 	
 					animation.addByPrefix('idle', "Tankman Idle Dance", 24, false);
 					animation.addByPrefix('singUP', 'Tankman UP note ', 24, false);
 					animation.addByPrefix('singDOWN', 'Tankman DOWN note ', 24, false);
-					animation.addByPrefix('singRIGHT', 'Tankman Right Note ', 24, false);
-					animation.addByPrefix('singLEFT', 'Tankman Note Left ', 24, false);
+					animation.addByPrefix('singRIGHT', 'Tankman Note Left ', 24, false);
+					animation.addByPrefix('singLEFT', 'Tankman Right Note ', 24, false);
 	
 					animation.addByPrefix('prettyGood', 'PRETTY GOOD', 24, false);
 					animation.addByPrefix('ugh', 'TANKMAN UGH', 24, false);
 
 					hpIcon = "tankman";
+
+					healthColorArray = [225, 225, 225];
+
+					iconWidth = 100;
 	
 					flipX = true;
 					playAnim('idle');
 
+					case "tankman-player":
+						frames = getPath('tankmanCaptain');
+		
+						animation.addByPrefix('idle', "Tankman Idle Dance", 24, false);
+						animation.addByPrefix('singUP', 'Tankman UP note ', 24, false);
+						animation.addByPrefix('singDOWN', 'Tankman DOWN note ', 24, false);
+						animation.addByPrefix('singRIGHT', 'Tankman Right Note ', 24, false);
+						animation.addByPrefix('singLEFT', 'Tankman Note Left ', 24, false);
+		
+						animation.addByPrefix('prettyGood', 'PRETTY GOOD', 24, false);
+						animation.addByPrefix('ugh', 'TANKMAN UGH', 24, false);
+	
+						healthColorArray = [225, 225, 225];
+
+						iconWidth = 100;
+
+						hpIcon = "tankman";
+		
+						flipX = true;
+						playAnim('idle');
+
 			case 'bf-christmas':
-				var tex = FlxAtlasFrames.fromSparrow('assets/characters/images/bfChristmas.png', 'assets/characters/xmls/bfChristmas.xml');
+				var tex = getPath('bfChristmas');
 				frames = tex;
 				animation.addByPrefix('idle', 'BF idle dance', 24, false);
 				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
@@ -275,11 +368,13 @@ class Character extends FlxSprite
 
 				playAnim('idle');
 
-				hpIcon = "bf-christmas";
+				hpIcon = "bf";
+
+				healthColorArray = [49, 176, 209];
 
 				flipX = true;
 			case 'bf-car':
-				var tex = FlxAtlasFrames.fromSparrow('assets/characters/images/bfCar.png', 'assets/characters/xmls/bfCar.xml');
+				var tex = getPath('bfCar');
 				frames = tex;
 				animation.addByPrefix('idle', 'BF idle dance', 24, false);
 				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
@@ -293,11 +388,13 @@ class Character extends FlxSprite
 
 				playAnim('idle');
 
-				hpIcon = "bf-car";
+				hpIcon = "bf";
+
+				healthColorArray = [49, 176, 209];
 
 				flipX = true;
 			case 'bf-pixel':
-				frames = FlxAtlasFrames.fromSparrow('assets/characters/images/bfPixel.png', 'assets/characters/xmls/bfPixel.xml');
+				frames = getPath('bfPixel');
 				animation.addByPrefix('idle', 'BF IDLE', 24, false);
 				animation.addByPrefix('singUP', 'BF UP NOTE', 24, false);
 				animation.addByPrefix('singLEFT', 'BF LEFT NOTE', 24, false);
@@ -316,13 +413,17 @@ class Character extends FlxSprite
 				width -= 100;
 				height -= 100;
 
+				iconWidth = 100;
+
 				hpIcon = "bf-pixel";
+
+				healthColorArray = [123, 214, 246];
 
 				antialiasing = false;
 
 				flipX = true;
 			case 'bf-pixel-dead':
-				frames = FlxAtlasFrames.fromSparrow('assets/characters/images/bfPixelsDEAD.png', 'assets/characters/xmls/bfPixelsDEAD.xml');
+				frames = getPath('bfPixelsDEAD');
 				animation.addByPrefix('singUP', "BF Dies pixel", 24, false);
 				animation.addByPrefix('firstDeath', "BF Dies pixel", 24, false);
 				animation.addByPrefix('deathLoop', "Retry Loop", 24, true);
@@ -333,6 +434,10 @@ class Character extends FlxSprite
 
 				hpIcon = "bf-pixel";
 
+				iconWidth = 100;
+
+				healthColorArray = [123, 214, 246];
+
 				// pixel bullshit
 				setGraphicSize(Std.int(width * 6));
 				updateHitbox();
@@ -340,7 +445,7 @@ class Character extends FlxSprite
 				flipX = true;
 
 			case 'senpai':
-				frames = FlxAtlasFrames.fromSparrow('assets/characters/images/senpai.png', 'assets/characters/xmls/senpai.xml');
+				frames = getPath('senpai');
 				animation.addByPrefix('idle', 'Senpai Idle', 24, false);
 				animation.addByPrefix('singUP', 'SENPAI UP NOTE', 24, false);
 				animation.addByPrefix('singLEFT', 'SENPAI LEFT NOTE', 24, false);
@@ -351,12 +456,16 @@ class Character extends FlxSprite
 
 				hpIcon = "senpai";
 
+				healthColorArray = [255, 170, 111];
+
+				iconWidth = 100;
+
 				setGraphicSize(Std.int(width * 6));
 				updateHitbox();
 
 				antialiasing = false;
 			case 'senpai-angry':
-				frames = FlxAtlasFrames.fromSparrow('assets/characters/images/senpai.png', 'assets/characters/xmls/senpai.xml');
+				frames = getPath('senpai');
 				animation.addByPrefix('idle', 'Angry Senpai Idle', 24, false);
 				animation.addByPrefix('singUP', 'Angry Senpai UP NOTE', 24, false);
 				animation.addByPrefix('singLEFT', 'Angry Senpai LEFT NOTE', 24, false);
@@ -365,7 +474,11 @@ class Character extends FlxSprite
 
 				playAnim('idle');
 
-				hpIcon = "senpai-angry";
+				hpIcon = "senpai";
+
+				iconWidth = 100;
+
+				healthColorArray = [255, 170, 111];
 
 				setGraphicSize(Std.int(width * 6));
 				updateHitbox();
@@ -373,7 +486,7 @@ class Character extends FlxSprite
 				antialiasing = false;
 
 			case 'spirit':
-				frames = FlxAtlasFrames.fromSpriteSheetPacker('assets/characters/images/spirit.png', 'assets/characters/txts/spirit.txt');
+				frames = getPacker('spirit');
 				animation.addByPrefix('idle', "idle spirit_", 24, false);
 				animation.addByPrefix('singUP', "up_", 24, false);
 				animation.addByPrefix('singRIGHT', "right_", 24, false);
@@ -385,13 +498,16 @@ class Character extends FlxSprite
 
 				playAnim('idle');
 
+				iconWidth = 100;
+
+				healthColorArray = [255, 60, 110];
+
 				hpIcon = "spirit";
 
 				antialiasing = false;
 
 			case 'parents-christmas':
-				frames = FlxAtlasFrames.fromSparrow('assets/characters/images/mom_dad_christmas_assets.png',
-					'assets/characters/xmls/mom_dad_christmas_assets.xml');
+				frames = getPath('mom_dad_christmas_assets');
 				animation.addByPrefix('idle', 'Parent Christmas Idle', 24, false);
 				animation.addByPrefix('singUP', 'Parent Up Note Dad', 24, false);
 				animation.addByPrefix('singDOWN', 'Parent Down Note Dad', 24, false);
@@ -406,10 +522,12 @@ class Character extends FlxSprite
 
 				hpIcon = "parents-christmas";
 
+				healthColorArray = [175, 102 + 85, 142];
+
 				playAnim('idle');
 
 			case "bf":
-				var tex = FlxAtlasFrames.fromSparrow('assets/characters/images/BOYFRIEND.png', 'assets/characters/xmls/BOYFRIEND.xml');
+				var tex = getPath('BOYFRIEND');
 				frames = tex;
 				animation.addByPrefix('idle', 'BF idle dance', 24, false);
 				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
@@ -429,13 +547,15 @@ class Character extends FlxSprite
 				animation.addByPrefix('scared', 'BF idle shaking', 24);
 			
 				hpIcon = "bf";
+
+				healthColorArray = [49, 176, 209];
 			
 				playAnim('idle');
 			
 				flipX = true;
 
 			case "dad":
-				tex = FlxAtlasFrames.fromSparrow('assets/characters/images/DADDY_DEAREST.png', 'assets/characters/xmls/DADDY_DEAREST.xml');
+				tex = getPath('DADDY_DEAREST');
 				frames = tex;
 				animation.addByPrefix('idle', 'Dad idle dance', 24);
 				animation.addByPrefix('singUP', 'Dad Sing note UP', 24);
@@ -445,7 +565,26 @@ class Character extends FlxSprite
 
 				hpIcon = "dad";
 
+				iconWidth = 100;
+
+				healthColorArray = [175, 102, 206];
+
 				playAnim('idle');
+
+				default:
+					exposure = new StringMap<Dynamic>();
+					frames = getPath(curCharacter);
+					exposure.set('hpIcon', hpIcon);
+					exposure.set('isPlayer', isPlayer);
+					exposure.set('healthColorArray', healthColorArray);
+					exposure.set('iconWidth', iconWidth);
+					exposure.set('playAnim', playAnim);
+					exposure.set('addByPrefix', animation.addByPrefix);
+					charBuild = ScriptHandler.loadModule('characters/' + curCharacter + '.hxchar', exposure);
+					updateableScript.push(charBuild);
+
+					if (charBuild.exists("createCharacter"))
+						charBuild.get("createCharacter")();
 				
 		}
 
@@ -476,6 +615,18 @@ class Character extends FlxSprite
 			}
 		}
 	}
+
+	public function getPath(path:String)
+	{
+		return FlxAtlasFrames.fromSparrow('assets/characters/images/' + path + '.png', 'assets/characters/xmls/' + path + '.xml');
+		trace('LOADED: ' + path);
+	}
+
+	public function getPacker(path:String)
+		{
+			return FlxAtlasFrames.fromSpriteSheetPacker('assets/characters/images/' + path + '.png', 'assets/characters/txts/' + path + '.txt');
+			trace('LOADED: ' + path);
+		}
 
 	public function loadOffsetFile(character:String)
 		{
@@ -529,6 +680,16 @@ class Character extends FlxSprite
 		{
 			switch (curCharacter)
 			{
+				case 'gf-tankmen':
+					if (!animation.curAnim.name.startsWith('hair'))
+					{
+						danced = !danced;
+
+						if (danced)
+							playAnim('danceRight');
+						else
+							playAnim('danceLeft');
+					}
 				case 'gf':
 					if (!animation.curAnim.name.startsWith('hair'))
 					{

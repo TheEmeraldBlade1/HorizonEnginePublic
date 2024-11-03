@@ -273,7 +273,7 @@ class AnimationDebug extends FlxState
 			genBoyOffsets(false);
 
 		if (FlxG.mouse.wheel != 0)
-			FlxG.camera.zoom -= 0.25 * FlxG.mouse.wheel;
+			FlxG.camera.zoom += 0.1 * FlxG.mouse.wheel;
 
 		if (FlxG.keys.pressed.I || FlxG.keys.pressed.J || FlxG.keys.pressed.K || FlxG.keys.pressed.L)
 		{

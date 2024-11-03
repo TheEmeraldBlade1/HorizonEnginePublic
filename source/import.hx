@@ -133,7 +133,7 @@ import foreverScript.ScriptHandler;
 import foreverScript.ScriptHandler.ForeverModule;
 
 // IMPORT STAGES
-import stages.MallEvil;
 import stages.SchoolEvil;
 import stages.Spooky;
 import stages.Philly;
+import stages.MallEvil;

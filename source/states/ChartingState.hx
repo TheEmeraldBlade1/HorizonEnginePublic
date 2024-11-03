@@ -33,6 +33,7 @@ import openfl.events.IOErrorEvent;
 import openfl.media.Sound;
 import openfl.net.FileReference;
 import openfl.utils.ByteArray;
+import flixel.addons.ui.FlxUISlider;
 
 using StringTools;
 
@@ -56,6 +57,8 @@ class ChartingState extends MusicBeatState
 	var curSong:String = 'Dadbattle';
 	var amountSteps:Int = 0;
 	var bullshitUI:FlxGroup;
+
+	public static var curDiff:String = '';
 
 	var highlight:FlxSprite;
 
@@ -92,6 +95,8 @@ class ChartingState extends MusicBeatState
 
 		leftIcon = new HealthIcon('bf');
 		rightIcon = new HealthIcon('dad');
+		rightIcon.animation.play('norm');
+		leftIcon.animation.play('norm');
 		leftIcon.scrollFactor.set(1, 1);
 		rightIcon.scrollFactor.set(1, 1);
 
@@ -121,6 +126,7 @@ class ChartingState extends MusicBeatState
 				needsVoices: true,
 				player1: 'bf',
 				player2: 'dad',
+				stage: 'stage',
 				speed: 1,
 				validScore: false
 			};
@@ -170,6 +176,8 @@ class ChartingState extends MusicBeatState
 		add(curRenderedNotes);
 		add(curRenderedSustains);
 
+		UI_box.selected_tab = 2;
+
 		super.create();
 	}
 
@@ -177,6 +185,10 @@ class ChartingState extends MusicBeatState
 	{
 		var UI_songTitle = new FlxUIInputText(10, 10, 70, _song.song, 8);
 		typingShit = UI_songTitle;
+
+		var UI_stageTitle = new FlxUIInputText(10, 200, 70, _song.stage, 8);
+
+		var UI_diffTitle = new FlxUIInputText(110, 200, 70, curDiff, 8);
 
 		var check_voices = new FlxUICheckBox(10, 25, null, null, "Has voice track", 100);
 		check_voices.checked = _song.needsVoices;
@@ -187,7 +199,7 @@ class ChartingState extends MusicBeatState
 			trace('CHECKED!');
 		};
 
-		var check_mute_inst = new FlxUICheckBox(10, 800, null, null, "Mute Instrumental (in editor)", 100);
+		var check_mute_inst = new FlxUICheckBox(10, 500, null, null, "Mute Instrumental (in editor)", 100);
 		check_mute_inst.checked = false;
 		check_mute_inst.callback = function()
 		{
@@ -242,6 +254,11 @@ class ChartingState extends MusicBeatState
 		var tab_group_song = new FlxUI(null, UI_box);
 		tab_group_song.name = "Song";
 		tab_group_song.add(UI_songTitle);
+		tab_group_song.add(UI_stageTitle);
+		tab_group_song.add(UI_diffTitle);
+
+		tab_group_song.add(new FlxText(UI_diffTitle.x, UI_diffTitle.y - 15, 0, 'Difficulty:'));
+		tab_group_song.add(new FlxText(UI_stageTitle.x, UI_stageTitle.y - 15, 0, 'Stage:'));
 
 		tab_group_song.add(check_voices);
 		tab_group_song.add(check_mute_inst);
@@ -330,14 +347,14 @@ class ChartingState extends MusicBeatState
 		var tab_group_note = new FlxUI(null, UI_box);
 		tab_group_note.name = 'Note';
 
-		stepperSusLength = new FlxUINumericStepper(10, 10, Conductor.stepCrochet / 2, 0, 0, Conductor.stepCrochet * 16);
+		stepperSusLength = new FlxUINumericStepper(10, 10, Conductor.stepCrochet / 2, 0, 0, Conductor.stepCrochet * 30);
 		stepperSusLength.value = 0;
 		stepperSusLength.name = 'note_susLength';
-
+		
 		var applyLength:FlxButton = new FlxButton(100, 10, 'Apply');
 
 		tab_group_note.add(stepperSusLength);
-		tab_group_note.add(applyLength);
+		//tab_group_note.add(applyLength);
 
 		UI_box.addGroup(tab_group_note);
 	}
@@ -494,6 +511,18 @@ class ChartingState extends MusicBeatState
 		FlxG.watch.addQuick('daBeat', curBeat);
 		FlxG.watch.addQuick('daStep', curStep);
 
+		if (FlxG.keys.justPressed.ESCAPE || FlxG.keys.justPressed.ENTER)
+		{
+			lastSection = curSection;
+
+			PlayState.SONG.song = _song.song;
+			PlayState.SONG.stage = _song.stage;
+			PlayState.SONG = _song;
+			FlxG.sound.music.stop();
+			vocals.stop();
+			FlxG.switchState(new PlayState());
+		}
+
 		{
 			if (FlxG.mouse.overlaps(curRenderedNotes))
 			{
@@ -538,16 +567,6 @@ class ChartingState extends MusicBeatState
 				dummyArrow.y = FlxG.mouse.y;
 			else
 				dummyArrow.y = Math.floor(FlxG.mouse.y / GRID_SIZE) * GRID_SIZE;
-		}
-
-		if (FlxG.keys.justPressed.ENTER)
-		{
-			lastSection = curSection;
-
-			PlayState.SONG = _song;
-			FlxG.sound.music.stop();
-			vocals.stop();
-			FlxG.switchState(new PlayState());
 		}
 
 		if (FlxG.keys.justPressed.E)
@@ -807,11 +826,15 @@ class ChartingState extends MusicBeatState
 		{
 			leftIcon.animation.play('bf');
 			rightIcon.animation.play('dad');
+			rightIcon.animation.play('norm');
+			leftIcon.animation.play('norm');
 		}
 		else
 		{
 			leftIcon.animation.play('dad');
 			rightIcon.animation.play('bf');
+			rightIcon.animation.play('norm');
+			leftIcon.animation.play('norm');
 		}
 	}
 
@@ -1036,7 +1059,7 @@ class ChartingState extends MusicBeatState
 
 	function loadJson(song:String):Void
 	{
-		PlayState.SONG = Song.loadFromJson(song.toLowerCase() + "-hard", song.toLowerCase());
+		PlayState.SONG = Song.loadFromJson(song + curDiff, song);
 		FlxG.resetState();
 	}
 
@@ -1068,7 +1091,7 @@ class ChartingState extends MusicBeatState
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-			_file.save(data.trim(), _song.song.toLowerCase() + ".json");
+			_file.save(data.trim(), _song.song.toLowerCase() + curDiff + ".json");
 		}
 	}
 
