@@ -8,6 +8,7 @@ import flixel.addons.transition.FlxTransitionableState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.input.keyboard.FlxKey;
 import flixel.system.FlxSound;
+import flixel.tweens.FlxEase;
 import flixel.util.FlxColor;
 
 class PauseSubState extends MusicBeatSubstate
@@ -22,6 +23,10 @@ class PauseSubState extends MusicBeatSubstate
 	var pauseMusic:FlxSound;
 
 	public var instance:MainMenuState;
+
+	var startTimer:FlxTimer;
+
+	public var stopInput:Bool = false;
 
 	public function new(x:Float, y:Float)
 	{
@@ -86,13 +91,15 @@ class PauseSubState extends MusicBeatSubstate
 		var downP = controls.DOWN_P;
 		var accepted = controls.ACCEPT;
 
-		if (upP)
-		{
-			changeSelection(-1);
-		}
-		if (downP)
-		{
-			changeSelection(1);
+		if (!stopInput){
+			if (upP)
+				{
+					changeSelection(-1);
+				}
+				if (downP)
+				{
+					changeSelection(1);
+				}
 		}
 
 		switch (curSelected){
@@ -103,30 +110,38 @@ class PauseSubState extends MusicBeatSubstate
 				options.visible = false;
 		}
 
-		if (accepted)
-		{
-			var daSelected:String = menuItems[curSelected];
-
-			switch (daSelected)
-			{
-				case "Resume":
-					close();
-				case "Restart Song":
-					FlxG.resetState();
-				case 'Toggle Ghost Tapping':
-					FlxG.save.data.gt = !FlxG.save.data.gt;
-				case "Exit to menu":
-					if (PlayState.isStoryMode)
-						FlxG.switchState(new StoryMenuState());
-					else
-						FlxG.switchState(new FreeplayState());
-			}
+		if (!stopInput){
+			if (accepted)
+				{
+					var daSelected:String = menuItems[curSelected];
+		
+					switch (daSelected)
+					{
+						case "Resume":
+							stopInput = true;
+							startCountdown();
+						case "Restart Song":
+							FlxG.resetState();
+						case 'Toggle Ghost Tapping':
+							FlxG.save.data.gt = !FlxG.save.data.gt;
+						case "Exit to menu":
+							ChartingMode.charting_Mode = false;
+							if (PlayState.isStoryMode)
+								FlxG.switchState(new StoryMenuState());
+							else
+								FlxG.switchState(new FreeplayState());
+					}
+				}
 		}
 		
-		if (FlxG.keys.justPressed.ESCAPE)
-		{
-			close();
+		if (!stopInput){
+			if (FlxG.keys.justPressed.ESCAPE)
+				{
+					stopInput = true;
+					startCountdown();
+				}
 		}
+
 		if (FlxG.keys.justPressed.J)
 		{
 			// for reference later!
@@ -167,4 +182,78 @@ class PauseSubState extends MusicBeatSubstate
 			}
 		}
 	}
+
+	function startCountdown():Void
+		{
+			var swagCounter:Int = 0;
+	
+			startTimer = new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
+			{
+				var introAssets:Map<String, Array<String>> = new Map<String, Array<String>>();
+				introAssets.set('default', ['ready.png', "set.png", "go.png"]);
+				introAssets.set('school', [
+					'weeb/pixelUI/ready-pixel.png',
+					'weeb/pixelUI/set-pixel.png',
+					'weeb/pixelUI/date-pixel.png'
+				]);
+				var introAlts:Array<String> = introAssets.get('default');
+				var altSuffix:String = "";
+	
+				switch (swagCounter)
+	
+				{
+					case 0:
+						FlxG.sound.play('assets/sounds/intro3' + altSuffix + TitleState.soundExt, 0.6);
+					case 1:
+						var ready:FlxSprite = new FlxSprite().loadGraphic('assets/images/' + introAlts[0]);
+						ready.scrollFactor.set();
+						ready.updateHitbox();
+	
+						ready.screenCenter();
+						add(ready);
+						FlxTween.tween(ready, {y: ready.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+							ease: FlxEase.cubeInOut,
+							onComplete: function(twn:FlxTween)
+							{
+								ready.destroy();
+							}
+						});
+						FlxG.sound.play('assets/sounds/intro2' + altSuffix + TitleState.soundExt, 0.6);
+					case 2:
+						var set:FlxSprite = new FlxSprite().loadGraphic('assets/images/' + introAlts[1]);
+						set.scrollFactor.set();
+						set.screenCenter();
+						add(set);
+						FlxTween.tween(set, {y: set.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+							ease: FlxEase.cubeInOut,
+							onComplete: function(twn:FlxTween)
+							{
+								set.destroy();
+							}
+						});
+						FlxG.sound.play('assets/sounds/intro1' + altSuffix + TitleState.soundExt, 0.6);
+					case 3:
+						var go:FlxSprite = new FlxSprite().loadGraphic('assets/images/' + introAlts[2]);
+						go.scrollFactor.set();
+	
+						go.updateHitbox();
+	
+						go.screenCenter();
+						add(go);
+						FlxTween.tween(go, {y: go.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+							ease: FlxEase.cubeInOut,
+							onComplete: function(twn:FlxTween)
+							{
+								go.destroy();
+							}
+						});
+						FlxG.sound.play('assets/sounds/introGo' + altSuffix + TitleState.soundExt, 0.6);
+					case 4:
+						close();
+				}
+	
+				swagCounter += 1;
+				// generateSong('fresh');
+			}, 5);
+		}
 }

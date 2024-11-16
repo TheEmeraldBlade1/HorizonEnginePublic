@@ -64,6 +64,7 @@ class ScriptHandler
 		exp.set("GraphicsShader", GraphicsShader);
 		exp.set("FlxBaseAnimation", FlxBaseAnimation);
 		exp.set("FlxAtlasFrames", FlxAtlasFrames);
+		exp.set("FlxRandom", FlxRandom);
 		
 		// Classes (FNF)
         exp.set("Note", Note);
@@ -73,12 +74,17 @@ class ScriptHandler
 		exp.set("FNFSprite", FNFSprite);
 		exp.set("HealthIcon", HealthIcon);
         exp.set("PlayState", PlayState);
+		exp.set("game", PlayState);
 		exp.set("StoryMenuState", StoryMenuState);
 		exp.set("SongScore", SongScore);
 		exp.set("Misses", Misses);
 		exp.set("Combo", Combo);
 		exp.set("Accuracy", Accuracy);
 		exp.set("SongSpeed", SongSpeed);
+		exp.set("ChartingMode", ChartingMode);
+		exp.set("Ratings", Ratings);
+		exp.set("ColorSwap", ColorSwap);
+		exp.set("Paths", Paths);
         
         //
 		parser.allowTypes = true;

@@ -56,13 +56,13 @@ class KeybindsMenu extends MusicBeatState
 		isDebug = true;
 		#end
 
-		songs.push("LEFT - " + FlxG.save.data.leftBind);
+		songs.push("LEFT: " + FlxG.save.data.leftBind);
 
-		songs.push("DOWN - " + FlxG.save.data.downBind);
+		songs.push("DOWN: " + FlxG.save.data.downBind);
 
-		songs.push("UP - " + FlxG.save.data.upBind);
+		songs.push("UP: " + FlxG.save.data.upBind);
 
-		songs.push("RIGHT - " + FlxG.save.data.rightBind);
+		songs.push("RIGHT: " + FlxG.save.data.rightBind);
 
 		// LOAD MUSIC
 
@@ -76,10 +76,9 @@ class KeybindsMenu extends MusicBeatState
 
 		for (i in 0...songs.length)
 		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i], true, false);
+			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i], false, false);
 			songText.isMenuItem = true;
 			songText.targetY = i;
-			songText.itemType = 'Center';
 			grpSongs.add(songText);
 			// songText.x += 40;
 			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
@@ -169,34 +168,30 @@ class KeybindsMenu extends MusicBeatState
 						{
 							case 0:
 								FlxG.save.data.leftBind = FlxG.keys.getIsDown()[0].ID.toString();
-								var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "LEFT - " + FlxG.save.data.leftBind, true, false);
+								var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "LEFT: " + FlxG.save.data.leftBind, false, false);
 								ctrl.isMenuItem = true;
 								ctrl.targetY = curSelected - 0;
-								ctrl.itemType = 'Center';
 								grpSongs.add(ctrl);
 								setBind = false;
 							case 1:
 								FlxG.save.data.downBind = FlxG.keys.getIsDown()[0].ID.toString();
-								var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "DOWN - " + FlxG.save.data.downBind, true, false);
+								var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "DOWN: " + FlxG.save.data.downBind, false, false);
 								ctrl.isMenuItem = true;
 								ctrl.targetY = curSelected - 1;
-								ctrl.itemType = 'Center';
 								grpSongs.add(ctrl);
 								setBind = false;
 							case 2:
 								FlxG.save.data.upBind = FlxG.keys.getIsDown()[0].ID.toString();
-								var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "UP - " + FlxG.save.data.upBind, true, false);
+								var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "UP: " + FlxG.save.data.upBind, false, false);
 								ctrl.isMenuItem = true;
 								ctrl.targetY = curSelected - 2;
-								ctrl.itemType = 'Center';
 								grpSongs.add(ctrl);
 								setBind = false;
 							case 3:
 								FlxG.save.data.rightBind = FlxG.keys.getIsDown()[0].ID.toString();
-								var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "RIGHT - " + FlxG.save.data.rightBind, true, false);
+								var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, "RIGHT: " + FlxG.save.data.rightBind, false, false);
 								ctrl.isMenuItem = true;
 								ctrl.targetY = curSelected - 3;
-								ctrl.itemType = 'Center';
 								grpSongs.add(ctrl);
 								setBind = false;
 						}

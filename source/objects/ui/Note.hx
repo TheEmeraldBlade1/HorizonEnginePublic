@@ -102,9 +102,13 @@ class Note extends FlxSprite
 				updateHitbox();
 
 			default:
-				if (isSustainNote)
 				{
-					frames = FlxAtlasFrames.fromSparrow('assets/images/NOTE_assets_SUSTAINS.png', 'assets/images/NOTE_assets_SUSTAINS.xml');
+					frames = FlxAtlasFrames.fromSparrow('assets/images/NOTE_assets.png', 'assets/images/NOTE_assets.xml');
+					animation.addByPrefix('greenScroll', 'green0');
+					animation.addByPrefix('redScroll', 'red0');
+					animation.addByPrefix('blueScroll', 'blue0');
+					animation.addByPrefix('purpleScroll', 'purple0');
+
 					animation.addByPrefix('purpleholdend', 'pruple end hold');
 					animation.addByPrefix('greenholdend', 'green hold end');
 					animation.addByPrefix('redholdend', 'red hold end');
@@ -114,14 +118,6 @@ class Note extends FlxSprite
 					animation.addByPrefix('greenhold', 'green hold piece');
 					animation.addByPrefix('redhold', 'red hold piece');
 					animation.addByPrefix('bluehold', 'blue hold piece');
-				}
-				else
-				{
-					frames = FlxAtlasFrames.fromSparrow('assets/images/NOTE_assets.png', 'assets/images/NOTE_assets.xml');
-					animation.addByPrefix('greenScroll', 'green0');
-					animation.addByPrefix('redScroll', 'red0');
-					animation.addByPrefix('blueScroll', 'blue0');
-					animation.addByPrefix('purpleScroll', 'purple0');
 				}
 
 				setGraphicSize(Std.int(width * 0.7));

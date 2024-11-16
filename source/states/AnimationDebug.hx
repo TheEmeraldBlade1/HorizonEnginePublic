@@ -8,6 +8,7 @@ import flixel.addons.display.FlxGridOverlay;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import flixel.ui.FlxButton;
 
 /**
 	*DEBUG MODE
@@ -159,10 +160,17 @@ class AnimationDebug extends FlxState
 			});
 	
 			player1DropDown.selectedLabel = char.curCharacter;
+
+			var saveButton:FlxButton = new FlxButton(-100, 10, "Save", function()
+			{
+				saveBoyOffsets();
+			});
+
 			var tab_group_offsets = new FlxUI(null, UI_box);
 			tab_group_offsets.name = "Offsets";
 
 			tab_group_offsets.add(player1DropDown);
+			tab_group_offsets.add(saveButton);
 	
 			UI_box.addGroup(tab_group_offsets);
 		}
@@ -364,10 +372,10 @@ class AnimationDebug extends FlxState
 				}
 			}
 
-		var upP = FlxG.keys.anyPressed([UP]);
-		var rightP = FlxG.keys.anyPressed([RIGHT]);
-		var downP = FlxG.keys.anyPressed([DOWN]);
-		var leftP = FlxG.keys.anyPressed([LEFT]);
+		var upP = FlxG.keys.anyJustPressed([UP]);
+		var rightP = FlxG.keys.anyJustPressed([RIGHT]);
+		var downP = FlxG.keys.anyJustPressed([DOWN]);
+		var leftP = FlxG.keys.anyJustPressed([LEFT]);
 
 		var holdShift = FlxG.keys.pressed.SHIFT;
 		var multiplier = 10;

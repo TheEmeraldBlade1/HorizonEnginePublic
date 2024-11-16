@@ -38,7 +38,7 @@ class FreeplayState extends MusicBeatState
 	var DJ1:FlxSprite;
 	var DJ2:FlxSprite;
 
-	var daTime:Float = 0.9;
+	var daTime:Float = 0.5;
 
 	var erectSongs:Array<String> = ['Dadbattle', 'Blammed', 'Fresh', 'Bopeebo', 'Thorns', 'Senpai', 'Roses'];
 

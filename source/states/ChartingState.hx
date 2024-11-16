@@ -74,6 +74,10 @@ class ChartingState extends MusicBeatState
 	var _song:SwagSong;
 
 	var typingShit:FlxInputText;
+	var typingShit2:FlxInputText;
+	var typingShit3:FlxInputText;
+	var typingShit4:FlxInputText;
+	var typingShit5:FlxInputText;
 	/*
 	 * WILL BE THE CURRENT / LAST PLACED NOTE
 	**/
@@ -83,8 +87,8 @@ class ChartingState extends MusicBeatState
 
 	var vocals:FlxSound;
 
-	var leftIcon:HealthIcon;
-	var rightIcon:HealthIcon;
+	var leftIcon:HealthIconCharter;
+	var rightIcon:HealthIconCharter;
 
 	override function create()
 	{
@@ -93,10 +97,8 @@ class ChartingState extends MusicBeatState
 		gridBG = FlxGridOverlay.create(GRID_SIZE, GRID_SIZE, GRID_SIZE * 8, GRID_SIZE * 16);
 		add(gridBG);
 
-		leftIcon = new HealthIcon('bf');
-		rightIcon = new HealthIcon('dad');
-		rightIcon.animation.play('norm');
-		leftIcon.animation.play('norm');
+		leftIcon = new HealthIconCharter('bf');
+		rightIcon = new HealthIconCharter('dad');
 		leftIcon.scrollFactor.set(1, 1);
 		rightIcon.scrollFactor.set(1, 1);
 
@@ -187,8 +189,10 @@ class ChartingState extends MusicBeatState
 		typingShit = UI_songTitle;
 
 		var UI_stageTitle = new FlxUIInputText(10, 200, 70, _song.stage, 8);
+		typingShit2 = UI_stageTitle;
 
 		var UI_diffTitle = new FlxUIInputText(110, 200, 70, curDiff, 8);
+		typingShit3 = UI_diffTitle;
 
 		var check_voices = new FlxUICheckBox(10, 25, null, null, "Has voice track", 100);
 		check_voices.checked = _song.needsVoices;
@@ -238,7 +242,7 @@ class ChartingState extends MusicBeatState
 
 		var characters:Array<String> = CoolUtil.coolTextFile('assets/data/charlist.fnflist');
 
-		var player1DropDown = new FlxUIDropDownMenu(10, 100, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
+		/*var player1DropDown = new FlxUIDropDownMenu(10, 100, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
 		{
 			_song.player1 = characters[Std.parseInt(character)];
 		});
@@ -249,7 +253,13 @@ class ChartingState extends MusicBeatState
 			_song.player2 = characters[Std.parseInt(character)];
 		});
 
-		player2DropDown.selectedLabel = _song.player2;
+		player2DropDown.selectedLabel = _song.player2;*/
+
+		var player1DropDown = new FlxUIInputText(10, 150, 70, _song.player1, 8);
+		typingShit4 = player1DropDown;
+
+		var player2DropDown = new FlxUIInputText(110, 150, 70, _song.player2, 8);
+		typingShit5 = player2DropDown;
 
 		var tab_group_song = new FlxUI(null, UI_box);
 		tab_group_song.name = "Song";
@@ -259,6 +269,9 @@ class ChartingState extends MusicBeatState
 
 		tab_group_song.add(new FlxText(UI_diffTitle.x, UI_diffTitle.y - 15, 0, 'Difficulty:'));
 		tab_group_song.add(new FlxText(UI_stageTitle.x, UI_stageTitle.y - 15, 0, 'Stage:'));
+
+		tab_group_song.add(new FlxText(player1DropDown.x, player1DropDown.y - 15, 0, 'Player:'));
+		tab_group_song.add(new FlxText(player2DropDown.x, player2DropDown.y - 15, 0, 'Opponent:'));
 
 		tab_group_song.add(check_voices);
 		tab_group_song.add(check_mute_inst);
@@ -491,21 +504,25 @@ class ChartingState extends MusicBeatState
 
 		Conductor.songPosition = FlxG.sound.music.time;
 		_song.song = typingShit.text;
+		_song.stage = typingShit2.text;
+		curDiff = typingShit3.text;
+		_song.player1 = typingShit4.text;
+		_song.player2 = typingShit5.text;
 
 		strumLine.y = getYfromStrum((Conductor.songPosition - sectionStartTime()) % (Conductor.stepCrochet * _song.notes[curSection].lengthInSteps));
 
-		if (curBeat % 4 == 0 && curStep >= 16 * (curSection + 1))
+		if (curBeat % 4 == 0 && curStep >= 16 * (curSection + 10))
 		{
 			trace(curStep);
-			trace((_song.notes[curSection].lengthInSteps) * (curSection + 1));
+			trace((_song.notes[curSection].lengthInSteps) * (curSection + 10));
 			trace('DUMBSHIT');
 
-			if (_song.notes[curSection + 1] == null)
+			if (_song.notes[curSection + 10] == null)
 			{
 				addSection();
 			}
 
-			changeSection(curSection + 1, false);
+			changeSection(curSection + 10, false);
 		}
 
 		FlxG.watch.addQuick('daBeat', curBeat);
@@ -530,7 +547,7 @@ class ChartingState extends MusicBeatState
 				{
 					if (FlxG.mouse.overlaps(note))
 					{
-						if (FlxG.mouse.justPressed || FlxG.mouse.pressed)
+						if (FlxG.mouse.pressed)
 						{
 							selectNote(note);
 						}
@@ -594,21 +611,23 @@ class ChartingState extends MusicBeatState
 			}
 		}
 
-		if (!typingShit.hasFocus)
-		{
-			if (FlxG.keys.justPressed.SPACE)
-			{
-				if (FlxG.sound.music.playing)
+		if (FlxG.keys.justPressed.SPACE){
+			if (!typingShit.hasFocus && !typingShit2.hasFocus && !typingShit3.hasFocus && !typingShit4.hasFocus && !typingShit5.hasFocus)
 				{
-					FlxG.sound.music.pause();
-					vocals.pause();
+					{
+						if (FlxG.sound.music.playing)
+						{
+							FlxG.sound.music.pause();
+							vocals.pause();
+						}
+						else
+						{
+							vocals.play();
+							FlxG.sound.music.play();
+						}
+					}
 				}
-				else
-				{
-					vocals.play();
-					FlxG.sound.music.play();
-				}
-			}
+		}
 
 			if (FlxG.keys.justPressed.R)
 			{
@@ -677,7 +696,6 @@ class ChartingState extends MusicBeatState
 					vocals.time = FlxG.sound.music.time;
 				}
 			}
-		}
 
 		_song.bpm = tempBpm;
 
@@ -826,15 +844,11 @@ class ChartingState extends MusicBeatState
 		{
 			leftIcon.animation.play('bf');
 			rightIcon.animation.play('dad');
-			rightIcon.animation.play('norm');
-			leftIcon.animation.play('norm');
 		}
 		else
 		{
 			leftIcon.animation.play('dad');
 			rightIcon.animation.play('bf');
-			rightIcon.animation.play('norm');
-			leftIcon.animation.play('norm');
 		}
 	}
 

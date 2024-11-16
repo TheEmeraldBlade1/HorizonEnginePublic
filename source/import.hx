@@ -1,71 +1,35 @@
 
 // STATES IMPORT
-import states.AnimationDebug;
-import states.ChartingState;
-import states.FreeplayState;
-import states.LatencyState;
-import states.MainMenuState;
-import states.PlayState;
-import states.StoryMenuState;
-import states.MusicBeatState;
-import states.OptionsMenu;
-import states.GameOverState;
-import states.TitleState;
-import states.GitarooPause;
-import states.NoteColorsState;
-import states.KeybindsMenu;
+import states.*;
 
 // SUBSTATES IMPORT
-import substates.MusicBeatSubstate;
-import substates.OptionsSubState;
-import substates.OutdatedSubState;
-import substates.PauseSubState;
-import substates.ButtonRemapSubstate;
-import substates.ControlsSubState;
-import substates.GameOverSubstate;
+import substates.*;
 
 // OBJECTS IMPORT
 import objects.Boyfriend;
 import objects.Character;
-import objects.MenuCharacter;
-import objects.MenuItem;
-import objects.Alphabet;
-import objects.BackgroundDancer;
-import objects.BackgroundGirls;
-import objects.Cursor;
-import objects.FNFSprite;
-import objects.CheckboxThingie;
-import objects.TankmenBG;
+import objects.*;
 
 // IMPORT BACKEND
-import backend.CoolUtil;
-import backend.Highscore;
+import backend.*;
 
 // IMPORT SONG FUNCTIONS
-import songFunctions.Song;
-import songFunctions.Section;
+import songFunctions.*;
 import songFunctions.Section.SwagSection;
 import songFunctions.Song.SwagSong;
-import songFunctions.ChartParser;
 
 // UI IMPORT
-import objects.ui.HealthIcon;
-import objects.ui.Note;
-import objects.ui.DialogueBox;
-import objects.ui.NoteSplash;
+import objects.ui.*;
 
 // API IMPORT
-import api.APIStuff;
-import api.NGio;
+import api.*;
 
 // IMPORT SHADERS
-import shaders.OverlayShader;
-import shaders.ColorSwap;
+import shaders.*;
 
 // IMPORT EFFECTS
 import effects.BlendModeEffect.BlendModeShader;
-import effects.BlendModeEffect;
-import effects.WiggleEffect;
+import effects.*;
 import effects.WiggleEffect.WiggleEffectType;
 import effects.WiggleEffect.WiggleShader;
 
@@ -105,16 +69,13 @@ import flixel.tweens.FlxTween;
 import flixel.math.FlxAngle;
 import flixel.util.FlxTimer;
 import flixel.effects.FlxFlicker;
+import flixel.math.FlxRandom;
 
 // IMPORT CONTROLS
 import Controls.KeyboardScheme;
 
 // IMPORT VARIABLES
-import publicVariables.Misses;
-import publicVariables.SongScore;
-import publicVariables.SongSpeed;
-import publicVariables.Accuracy;
-import publicVariables.Combo;
+import publicVariables.*;
 
 // IMPORT HSCRIPT
 import hscript.Expr;
@@ -129,11 +90,8 @@ import hscript.Tools;
 
 // IMPORT FOREVER SCRIPT
 import haxe.ds.StringMap;
-import foreverScript.ScriptHandler;
+import foreverScript.*;
 import foreverScript.ScriptHandler.ForeverModule;
 
 // IMPORT STAGES
-import stages.SchoolEvil;
-import stages.Spooky;
-import stages.Philly;
-import stages.MallEvil;
+import stages.*;

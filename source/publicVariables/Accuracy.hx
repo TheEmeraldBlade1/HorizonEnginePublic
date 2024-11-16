@@ -39,7 +39,7 @@ class Accuracy {
     
     public static function ratingAcurracyGet(daRating:String):Void {
         switch(daRating) {
-            case 'sick': totalNotesHit += 1;
+            case 'sick' | 'epic': totalNotesHit += 1;
             case 'good': totalNotesHit += 0.65;
             case 'bad': totalNotesHit += 0.2;
             case 'shit': totalNotesHit -= 2;

@@ -7,7 +7,7 @@ class SongScore {
         songScore = 0;
     }
 
-    public static function scoreAdd(points:Int = 10):Void {
+    public static function scoreAdd(points:Int = 1):Void {
         songScore += points;
     }
 
@@ -17,6 +17,7 @@ class SongScore {
 
     public static function ratingScoreGet(daRating:String):Void {
         switch(daRating) {
+            case 'epic': songScore += 700;
             case 'sick': songScore += 350;
             case 'good': songScore += 200;
             case 'bad': songScore += 100;

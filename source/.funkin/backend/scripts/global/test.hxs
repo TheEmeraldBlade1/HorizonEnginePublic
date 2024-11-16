@@ -1,0 +1,7 @@
+function create(){
+    trace('CREATE WORKS');
+}
+
+function createPost(){
+    trace('CREATE POST WORKS')
+}

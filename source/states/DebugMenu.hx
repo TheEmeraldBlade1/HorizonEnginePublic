@@ -142,6 +142,8 @@ class DebugMenu extends MusicBeatState
 			switch (curSelected)
 			{
 				case 0:
+					PlayState.isStoryMode = false;
+					ChartingMode.charting_Mode = true;
 					FlxG.switchState(new ChartingState());
 				case 1:
 					AnimationDebug.menu = true;

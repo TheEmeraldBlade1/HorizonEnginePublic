@@ -1,0 +1,22 @@
+function createCharacter()
+{
+    getPath('momCar');
+				
+    addAnimation('idle', "Mom Idle", 24, false);
+    addAnimation('singUP', "Mom Up Pose", 24, false);
+    addAnimation('singDOWN', "MOM DOWN POSE", 24, false);
+    addAnimation('singLEFT', 'Mom Left Pose', 24, false);
+    // ANIMATION IS CALLED MOM LEFT POSE BUT ITS FOR THE RIGHT
+    // CUZ DAVE IS DUMB!
+    addAnimation('singRIGHT', 'Mom Pose Left', 24, false);
+
+    getHPIcon('mom');
+
+    getIconWidth(100);
+
+    getIconColorArray(216, 85, 142);
+
+    playAnim('idle');
+
+    trace('CHARACTER LOADED!!');
+}

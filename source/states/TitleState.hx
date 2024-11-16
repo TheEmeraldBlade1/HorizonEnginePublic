@@ -92,6 +92,12 @@ class TitleState extends MusicBeatState
 		if (FlxG.save.data.transparentNotes == null)
 			FlxG.save.data.transparentNotes = true;
 
+		if (FlxG.save.data.systemCursor == null)
+			FlxG.save.data.systemCursor = false;
+
+		if (FlxG.save.data.splashSkin == null)
+			FlxG.save.data.splashSkin = 0;
+
 
 
 		// DEBUG BULLSHIT

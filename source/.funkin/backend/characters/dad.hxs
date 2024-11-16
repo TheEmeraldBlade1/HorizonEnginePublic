@@ -1,0 +1,19 @@
+function createCharacter()
+{
+    trace('CHARACTER LOADED!!');
+    getPath('DADDY_DEAREST');
+				
+    addAnimation('idle', 'Dad idle dance');
+    addAnimation('singUP', 'Dad Sing note UP');
+    addAnimation('singRIGHT', 'Dad Sing Note LEFT');
+    addAnimation('singDOWN', 'Dad Sing Note DOWN');
+    addAnimation('singLEFT', 'dad sing note right');
+
+    getHPIcon('dad');
+
+    getIconWidth(100);
+
+    getIconColorArray(175, 102, 206);
+
+    playAnim('idle');
+}

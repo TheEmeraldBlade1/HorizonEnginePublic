@@ -28,7 +28,7 @@ class OptionsMenu extends MusicBeatState
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	private var curPlaying:Bool = false;
 
-	private var schemArray:Array<String> = ['WASD', 'ZX23', 'DFJK', 'QWOP', 'ASKL'];
+	private var schemArray:Array<String> = ['NightmareVision', 'Forever', 'Vanilla'];
 	private var checkboxArray:Array<CheckboxThingie> = [];
 	private var checkboxNumber:Array<Int> = [];
 	override function create()
@@ -64,9 +64,13 @@ class OptionsMenu extends MusicBeatState
 		
 		songs.push('Song Length');
 
-		songs.push('Scroll Speed: ' + FlxG.save.data.song_speed);
+		songs.push('Scroll Speed <' + FlxG.save.data.song_speed + ">");
 
 		songs.push('Transparent Notes');
+
+		songs.push('System Cursor');
+
+		songs.push('Splash <' + schemArray[FlxG.save.data.splashSkin] + ">");
 
 		// LOAD MUSIC
 
@@ -81,16 +85,20 @@ class OptionsMenu extends MusicBeatState
 		for (i in 0...songs.length)
 		{
 			var songText:Alphabet;
-			if (i == 10){
+			if (i == 78546543){
 				songText = new Alphabet(0, (70 * i) + 30, songs[i], false, false);
 			}else{
 				songText = new Alphabet(0, (70 * i) + 30, songs[i], true, false);
 			}
 			songText.isMenuItem = true;
 			songText.targetY = i;
-			songText.itemType = 'Center';
+			if (i == 13){
+				songText.itemType = 'Center';
+			}else{
+				songText.itemType = 'Psych';
+			}
 			grpSongs.add(songText);
-			if (i != 1 && i != 7 && i != 10){
+			if (i != 1 && i != 7 && i != 10 && i != 13){
 				var checkbox:CheckboxThingie = new CheckboxThingie(songText.x, songText.y, false);
 				checkbox.sprTracker = songText;
 				checkboxArray.push(checkbox);
@@ -163,26 +171,47 @@ class OptionsMenu extends MusicBeatState
 		}
 
 		if (controls.LEFT_P && curSelected == 10){
-			if (FlxG.save.data.song_speed < 0.1)
-				FlxG.save.data.song_speed = 5;
-			else
 				FlxG.save.data.song_speed -= 0.1;
+				if (FlxG.save.data.song_speed < 0.1)
+					FlxG.save.data.song_speed = 5;
 			grpSongs.remove(grpSongs.members[curSelected]);
-			var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, 'Scroll Speed: ' + FlxG.save.data.song_speed, false, false);
+			var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, 'Scroll Speed <' + FlxG.save.data.song_speed + ">", true, false);
 			ctrl.isMenuItem = true;
 			ctrl.targetY = curSelected - 10;
-			ctrl.itemType = 'Center';
+			ctrl.itemType = 'Psych';
 			grpSongs.add(ctrl);
 		}
 		if (controls.RIGHT_P && curSelected == 10){
-			if (FlxG.save.data.song_speed > 5)
-				FlxG.save.data.song_speed = 0.1;
-			else
 				FlxG.save.data.song_speed += 0.1;
+				if (FlxG.save.data.song_speed > 5)
+					FlxG.save.data.song_speed = 0.1;
 			grpSongs.remove(grpSongs.members[curSelected]);
-			var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, 'Scroll Speed: ' + FlxG.save.data.song_speed, false, false);
+			var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, 'Scroll Speed <' + FlxG.save.data.song_speed + ">", true, false);
 			ctrl.isMenuItem = true;
 			ctrl.targetY = curSelected - 10;
+			ctrl.itemType = 'Psych';
+			grpSongs.add(ctrl);
+		}
+
+		if (controls.LEFT_P && curSelected == 13){
+				FlxG.save.data.splashSkin -= 1;
+				if (FlxG.save.data.splashSkin < 0)
+					FlxG.save.data.splashSkin = schemArray.length - 1;
+			grpSongs.remove(grpSongs.members[curSelected]);
+			var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, 'Splash <' + schemArray[FlxG.save.data.splashSkin] + ">", true, false);
+			ctrl.isMenuItem = true;
+			ctrl.targetY = curSelected - 13;
+			ctrl.itemType = 'Center';
+			grpSongs.add(ctrl);
+		}
+		if (controls.RIGHT_P && curSelected == 13){
+				FlxG.save.data.splashSkin += 1;
+				if (FlxG.save.data.splashSkin >= schemArray.length)
+					FlxG.save.data.splashSkin = 0;
+			grpSongs.remove(grpSongs.members[curSelected]);
+			var ctrl:Alphabet = new Alphabet(0, (70 * curSelected) + 30, 'Splash <' + schemArray[FlxG.save.data.splashSkin] + ">", true, false);
+			ctrl.isMenuItem = true;
+			ctrl.targetY = curSelected - 13;
 			ctrl.itemType = 'Center';
 			grpSongs.add(ctrl);
 		}
@@ -215,6 +244,8 @@ class OptionsMenu extends MusicBeatState
 					checkbox.daValue = FlxG.save.data.timeBarTxt;
 				case 'Transparent Notes':
 					checkbox.daValue = FlxG.save.data.transparentNotes;
+				case 'System Cursor':
+					checkbox.daValue = FlxG.save.data.systemCursor;
 			}
 		}
 
@@ -244,6 +275,8 @@ class OptionsMenu extends MusicBeatState
 					FlxG.save.data.timeBarTxt = !FlxG.save.data.timeBarTxt;
 				case 11:
 					FlxG.save.data.transparentNotes = !FlxG.save.data.transparentNotes;
+				case 12:
+					FlxG.save.data.systemCursor = !FlxG.save.data.systemCursor;
 			}
 		}
 	}
